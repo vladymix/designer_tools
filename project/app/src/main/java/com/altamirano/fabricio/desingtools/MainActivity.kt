@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), DialogGuidesConfig.OnColorResult {
         }
 
         binding.btnCustomGuides.setOnClickListener {
-            DialogGuidesConfig.createDilaog(
+            DialogGuidesConfig.createDialog(
                 binding.guideLines.verticalColor,
                 binding.guideLines.horizontalColor
             ).show(supportFragmentManager, "guides")

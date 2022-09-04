@@ -14,26 +14,29 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class DialogGuidesConfig : BottomSheetDialogFragment() {
 
-    private lateinit var binding:DialogConfigGuidesBinding
-    lateinit var listener :OnColorResult
+    private lateinit var binding: DialogConfigGuidesBinding
+    private lateinit var listener: OnColorResult
+    private var colorVertical = ColorPicker(255, 255, 0, 0)
+    private var colorHorizontal = ColorPicker(255, 255, 0, 0)
+    private var dialogModeHorizontal = true
 
-    companion object{
-        fun createDilaog(vertical: Int, horizontal: Int):DialogGuidesConfig{
+    companion object {
+        const val TAG_VERTICAL = "Vertical"
+        const val TAG_HORIZONTAL = "Horizontal"
+
+        fun createDialog(vertical: Int, horizontal: Int): DialogGuidesConfig {
             val dialog = DialogGuidesConfig()
             dialog.arguments = Bundle().apply {
-                putInt("Vertical", vertical)
-                putInt("Horizontal", horizontal)
+                putInt(TAG_VERTICAL, vertical)
+                putInt(TAG_HORIZONTAL, horizontal)
             }
             return dialog
         }
     }
 
-    interface OnColorResult{
+    interface OnColorResult {
         fun colorSelected(vertical: Int, horizontal: Int)
     }
-
-    private var colorVertical = ColorPicker(255,255,0,0)
-    private var colorHorizontal = ColorPicker(255,255,0,0)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,49 +52,52 @@ class DialogGuidesConfig : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    private fun showDialogChooseColor() {
+        val dialog = ColorPickerDialog()
+        dialog.colorInit = if (dialogModeHorizontal) colorHorizontal else colorVertical
+        dialog.onColorChangeListener = { colorPicker ->
+            if (dialogModeHorizontal) {
+                colorHorizontal = colorPicker!!
+                binding.indicatorHorizontal.setColorFilter(colorPicker.getAsColor())
+            } else {
+                colorVertical = colorPicker!!
+                binding.indicatorVertical.setColorFilter(colorPicker.getAsColor())
+            }
+            executeListener()
+        }
+        dialog.show(parentFragmentManager, "color")
+    }
 
-    private fun executeListener(){
+    private fun setColor(vertical: Int, horizontal: Int) {
+        colorHorizontal =
+            ColorPicker(255, Color.red(horizontal), Color.green(horizontal), Color.blue(horizontal))
+        colorVertical =
+            ColorPicker(255, Color.red(vertical), Color.green(vertical), Color.blue(vertical))
+
+        binding.indicatorHorizontal.setColorFilter(colorHorizontal.getAsColor())
+        binding.indicatorVertical.setColorFilter(colorVertical.getAsColor())
+    }
+
+    private fun executeListener() {
         listener.colorSelected(colorVertical.getAsColor(), colorHorizontal.getAsColor())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            setColor(it.getInt("Vertical"),it.getInt("Horizontal") )
+            setColor(it.getInt(TAG_VERTICAL), it.getInt(TAG_HORIZONTAL))
         }
 
-
         binding.btnHorizontal.setOnClickListener {
-           val dialog = ColorPickerDialog()
-            dialog.onColorChangeListener = { colorPicker->
-                colorHorizontal = colorPicker!!
-                binding.indicatorHorizontal.setColorFilter(colorPicker.getAsColor())
-                executeListener()
-            }
-            dialog.colorInit = colorHorizontal
-            dialog.show(parentFragmentManager,"color")
+            dialogModeHorizontal = true
+            showDialogChooseColor()
         }
 
         binding.btnVertical.setOnClickListener {
-            val dialog = ColorPickerDialog()
-            dialog.colorInit = colorVertical
-            dialog.onColorChangeListener = { colorPicker->
-                colorVertical = colorPicker!!
-                binding.indicatorVertical.setColorFilter(colorPicker.getAsColor())
-                executeListener()
-            }
-            dialog.show(parentFragmentManager,"color")
+            dialogModeHorizontal = false
+            showDialogChooseColor()
 
         }
-    }
-
-
-    fun setColor(vertical:Int, horizontal:Int){
-        colorHorizontal = ColorPicker(255,Color.red(horizontal),Color.green(horizontal),Color.blue(horizontal))
-        colorVertical = ColorPicker(255,Color.red(vertical),Color.green(vertical),Color.blue(vertical))
-
-        binding.indicatorHorizontal.setColorFilter(colorHorizontal.getAsColor())
-        binding.indicatorVertical.setColorFilter(colorVertical.getAsColor())
     }
 
 }
