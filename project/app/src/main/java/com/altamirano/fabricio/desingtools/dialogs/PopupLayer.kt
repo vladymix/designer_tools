@@ -15,20 +15,22 @@ import com.altamirano.fabricio.desingtools.models.ImageLayer
 
 class PopupLayer(private val context: Context, val imageLayer: ImageLayer, val listener: Result) {
 
+    private lateinit var binding: DialogConfigLayerBinding
+
     interface Result {
         fun changeOpacity(opacity: Int, imageLayer: ImageLayer)
         fun delete(imageLayer: ImageLayer)
     }
 
-    private lateinit var binding: DialogConfigLayerBinding
-
     fun show() {
         val inflater = context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val view = inflater.inflate(R.layout.dialog_config_layer, null)
+
         binding = DialogConfigLayerBinding.bind(view)
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 binding.textView.text = "$p1 %"
                 listener.changeOpacity(p1, imageLayer)
@@ -36,7 +38,6 @@ class PopupLayer(private val context: Context, val imageLayer: ImageLayer, val l
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
                 binding.content.setBackgroundColor(Color.TRANSPARENT)
-
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {

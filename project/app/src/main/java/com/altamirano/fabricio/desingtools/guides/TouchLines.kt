@@ -2,10 +2,11 @@ package com.altamirano.fabricio.desingtools.guides
 
 import android.graphics.Canvas
 import android.util.Log
+import kotlin.math.sqrt
 
 class TouchLines {
 
-    val lines = ArrayList<LineToDraw>().apply {
+    private val lines = ArrayList<LineToDraw>().apply {
         add(LineToDraw(LineToDraw.TypeDisplace.Horizontal)) // HorizontalTop
         add(LineToDraw(LineToDraw.TypeDisplace.Horizontal)) // HorizontalDown
         add(LineToDraw(LineToDraw.TypeDisplace.Vertical)) // VerticalLeft
@@ -130,7 +131,7 @@ class TouchLines {
         fun distanceTo(nearby: Point): Float {
             val xd = nearby.x - x
             val yd = nearby.y - y
-            return Math.sqrt((xd * xd).toDouble() + (yd * yd).toDouble()).toFloat()
+            return sqrt((xd * xd).toDouble() + (yd * yd).toDouble()).toFloat()
         }
     }
 }

@@ -1,9 +1,10 @@
-package com.altamirano.fabricio.desingtools
+package com.altamirano.fabricio.desingtools.ui
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.altamirano.fabricio.core.tools.inflate
+import com.altamirano.fabricio.desingtools.R
 import com.altamirano.fabricio.desingtools.databinding.ImageItemBinding
 import com.altamirano.fabricio.desingtools.models.ImageLayer
 

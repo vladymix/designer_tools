@@ -5,13 +5,15 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.altamirano.fabricio.desingtools.AppLogic.getAsDp
 
 class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     var horizontalColor: Int = Color.RED
     var verticalColor: Int = Color.RED
     private var numLines = 10
-    private val numbersGraphics = NumbersGraphics()
+    private val indicatorHorizontal = NumbersGraphics()
+    private val indicatorVertical = NumbersGraphics()
     private val touchLines = TouchLines()
 
     init {
@@ -22,9 +24,6 @@ class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         event?.let {
             when (it.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    numbersGraphics.startY = it.y
-                    numbersGraphics.startX = it.x
-
                     touchLines.getLineNearby(it.x, it.y).let { line ->
                         if (line.typeDisplace == LineToDraw.TypeDisplace.Vertical) {
                             displaceVertical(it.x, line)
@@ -32,24 +31,25 @@ class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                             displaceHorizontal(it.y, line)
                         }
                     }
-                    numbersGraphics.text =
-                        touchLines.getPointToDistance(LineToDraw.TypeDisplace.Horizontal).toString()
                     invalidate()
 
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    numbersGraphics.startY = it.y
-                    numbersGraphics.startX = it.x
-
                     touchLines.getLineMoving()?.let { line ->
                         if (line.typeDisplace == LineToDraw.TypeDisplace.Vertical) {
                             displaceVertical(it.x, line)
+                            indicatorHorizontal.startY = it.y
+                            indicatorHorizontal.startX = it.x
+                            indicatorHorizontal.text =
+                                this.getDistance(LineToDraw.TypeDisplace.Horizontal)
                         } else {
                             displaceHorizontal(it.y, line)
+                            indicatorVertical.startY = it.y
+                            indicatorVertical.startX = it.x
+                            indicatorVertical.text =
+                                this.getDistance(LineToDraw.TypeDisplace.Vertical)
                         }
                     }
-                    numbersGraphics.text =
-                        touchLines.getPointToDistance(LineToDraw.TypeDisplace.Horizontal).toString()
 
                     invalidate()
                 }
@@ -60,6 +60,11 @@ class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
             return true
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun getDistance(type: LineToDraw.TypeDisplace): String {
+        val value = this.context.getAsDp(touchLines.getPointToDistance(type))
+        return value.toString()
     }
 
     private fun displaceHorizontal(y: Float, line: LineToDraw) {
@@ -82,7 +87,8 @@ class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         canvas?.let {
             touchLines.setStartLines(this.height, this.width)
             touchLines.draw(it)
-            numbersGraphics.draw(it)
+            indicatorHorizontal.draw(it)
+            indicatorVertical.draw(it)
         }
     }
 
@@ -91,6 +97,9 @@ class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         this.horizontalColor = horizontal
         touchLines.colorVertical(vertical)
         touchLines.colorHorizontal(horizontal)
+
+        indicatorHorizontal.setColor(vertical)
+        indicatorVertical.setColor(horizontal)
         invalidate()
     }
 }

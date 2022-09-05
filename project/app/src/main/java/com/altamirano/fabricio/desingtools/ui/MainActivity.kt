@@ -1,4 +1,4 @@
-package com.altamirano.fabricio.desingtools
+package com.altamirano.fabricio.desingtools.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.altamirano.fabricio.core.dialogs.AstDialog
+import com.altamirano.fabricio.desingtools.AppLogic
 import com.altamirano.fabricio.desingtools.databinding.ActivityMainBinding
 import com.altamirano.fabricio.desingtools.dialogs.DialogGuidesConfig
 import com.altamirano.fabricio.desingtools.dialogs.PopupLayer

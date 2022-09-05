@@ -6,17 +6,21 @@ import android.graphics.Paint
 
 class NumbersGraphics {
 
-    private val labelPaint: Paint = Paint()
+    private val fillPaint: Paint = Paint()
     private val textPaint: Paint
     private val TEXT_SIZE = 50f
     var text = "10"
 
     init {
-        labelPaint.color = Color.RED
-        labelPaint.style = Paint.Style.FILL
+        fillPaint.color = Color.RED
+        fillPaint.style = Paint.Style.FILL
         textPaint = Paint()
         textPaint.color = Color.WHITE
         textPaint.textSize = TEXT_SIZE
+    }
+
+    fun setColor(color:Int){
+        fillPaint.color = color
     }
 
    var startX:Float = 0f
@@ -32,7 +36,7 @@ class NumbersGraphics {
             startY,
             startX + textWidth ,
             startY+lineHeight,
-            labelPaint
+            fillPaint
         )
         canvas.drawText(text,startX,startY+lineHeight-10, textPaint )
     }
