@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.altamirano.fabricio.desingtools.AppLogic.getAsDp
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -64,7 +66,7 @@ class ViewGuide(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
 
     private fun getDistance(type: LineToDraw.TypeDisplace): String {
         val value = this.context.getAsDp(touchLines.getPointToDistance(type))
-        return value.toString()
+        return DecimalFormat("#.##").apply { this.roundingMode = RoundingMode.DOWN }.format(value)
     }
 
     private fun displaceHorizontal(y: Float, line: LineToDraw) {

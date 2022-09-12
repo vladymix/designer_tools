@@ -9,7 +9,10 @@
     <com.altamirano.fabricio.desingtools.layer.LayerView
         android:id="@+id/layerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+
+    </com.altamirano.fabricio.desingtools.layer.LayerView>
 
     <com.altamirano.fabricio.desingtools.guides.ViewGuide
         android:id="@+id/guideLines"
@@ -57,6 +60,15 @@
 
 
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#8999"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

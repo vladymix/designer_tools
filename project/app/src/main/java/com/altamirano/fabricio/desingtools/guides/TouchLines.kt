@@ -79,7 +79,7 @@ class TouchLines {
                 val line = getLine(Position.HorizontalTop)
                 val line2 = getLine(Position.HorizontalDown)
                 val distance =
-                    Point(line.startY, line.startY).distanceTo(Point(line2.startY, line2.startY))
+                    Point(line.startX, line.startY).distanceTo(Point(line2.startX, line2.startY))
                 distance
 
             }
@@ -87,7 +87,7 @@ class TouchLines {
                 val line = getLine(Position.VerticalRight)
                 val line2 = getLine(Position.VerticalLeft)
                 val distance =
-                    Point(line.startX, line.startX).distanceTo(Point(line2.startX, line2.startX))
+                    Point(line.startX, line.startY).distanceTo(Point(line2.startX, line2.startY))
                 distance
             }
         }
